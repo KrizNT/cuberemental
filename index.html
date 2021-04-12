@@ -1,0 +1,117 @@
+<script>
+    function update() {
+        document.getElementById('text').value = cubecount;
+        document.title = cubecount + " Cubes";
+        
+        document.getElementById('ammountMultiplier').innerHTML = "Multiplier Upgrade x" + (multiplier+1);
+        document.getElementById('ammountMultiplier2').innerHTML = "x" + (multiplier+1);
+        document.getElementById('costMultiplier').innerHTML = ((multiplier+1) * 100) + " Cubes";
+        document.getElementById('currentMultiplier').innerHTML = "Your current Multiplier is x" + (multiplier);
+        
+        document.getElementById('ammountAutoClick').innerHTML = "You Own " + autoClick + " Drill Mk.I";
+        document.getElementById('costAutoClick').innerHTML = ((autoClick+1) * 12) + " Cubes";
+        
+        document.getElementById('ammountFarms').innerHTML = "You Own " + farms + " Drill Mk.II";
+        document.getElementById('costFarms').innerHTML = ((farms+1) * 15) + " Cubes";
+        
+        document.getElementById('cubespersecond').innerHTML = "You are gaining " + (((autoClick)+(farms*2))*multiplier) + " Cubes per/s";
+    }
+    
+    var multiplier = 1;
+    var cubecount = 0;
+    var autoClick = 0;
+    var farms = 0;
+    
+    function timer() {
+        cubecount = cubecount + autoClick*multiplier;
+        cubecount = cubecount + farms*2*multiplier;
+        update()
+    }
+    setInterval(timer, 1000)
+</script>
+<html>
+<head><title>0 Cubes</title></head>
+<body>
+
+    <p id="cubespersecond">You are gaining 0 Cubes per/s</p>
+    
+    <a href=# onclick="add()"><img src="Cuberemental/images/cubiscus.png"></a>
+    <br><br>
+    You got: 
+    <input type="text" id="text" disabled style= text-align:center value=0>
+    <script>
+    function add() {
+        cubecount = cubecount + 1
+        update()
+    }
+    </script>
+     Cubes
+    <br><br>
+    
+    <button><a href="#" onClick="save()">Save</a></button>
+    <button><a href="#" onclick="load()">Load</a></button>
+    <br><br>
+    
+    <p id="ammountMultiplier">Multiplier Upgrade x2</p>
+    <button><a href="#" onClick="buyMultiplier()"><span id="ammountMultiplier2">x2</span></a></button>
+    <p id="costMultiplier">200 Cubes</p>
+    <p id="currentMultiplier">Your current Multiplier is x1</p>
+    <br>
+    
+    <p>Buy 1 Drill Mk.I</p>
+    <button><a href="#" onClick="buyAutoClick()"><img src=Cuberemenral/mk.i.png width="30px" height="40px"></a></button>
+    <p id="costAutoClick">12 Cubes</p>
+    <p id="ammountAutoClick">You Own 0 Drill Mk.I<</p>
+    
+    <br>
+    
+    <p>Buy 1 Drill Mk.II</p>
+    <button><a href="#" onClick="buyFarm()"><img src="farm.png" width="50px" height="50px"></a></button>
+    <p id="costFarms">15 Cubes</p>
+    <p id="ammountFarms">You Own 0 Drill Mk.II<</p>
+    
+    <script>
+    function save() {
+        localStorage.setItem("cubecount", cubecount);
+        localStorage.setItem("autoClick", autoClick);
+        localStorage.setItem("farms", farms);
+        localStorage.setItem("multiplier", multiplier);
+    }
+    function load() {
+        cubecount = localStorage.getItem("cubecount");
+        cubecount = parseInt(cubecount);
+        autoClick = localStorage.getItem("autoClick");
+        autoClick = parseInt(autoClick);
+        farms = localStorage.getItem("farms");
+        farms = parseInt(farms);
+        multiplier = localStorage.getItem("multiplier");
+        multiplier = parseInt(multiplier);        
+        update()
+    }
+        
+    function buyAutoClick() {
+        if (cubecount >= ((autoClick+1) * 12)) {
+            cubecount = cubecount - ((autoClick+1) * 12);
+            autoClick = autoClick + 1;
+            update()
+        }
+    }
+        
+    function buyFarm() {
+        if (cubecount >= ((farms+1) * 15)) {
+            cubecount = cubecount - ((farms+1) * 15);
+            farms = farms + 1;
+            update()
+        }
+    }
+    
+    function buyMultiplier() {
+        if (cubecount >= ((multiplier+1) * 100)) {
+            cubecount = cubecount - ((multiplier+1) * 50);
+            multiplier = multiplier + 1;
+            update()
+        }
+    }
+    </script>
+</body>
+</html>
